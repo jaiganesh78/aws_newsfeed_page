@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum NewsCategory {
+  AWS
+  AZURE
+  GCP
+  CLOUD
+  AI
+  DEVOPS
+  CYBERSECURITY
+  PROGRAMMING
+  GENERAL
+}
+
+model NewsArticle {
+  id          String        @id @default(uuid()) @db.Uuid
+  title       String
+  description String?       @db.Text
+  aiSummary   String?       @map("ai_summary") @db.Text
+  imageUrl    String?       @map("image_url")
+  sourceName  String        @map("source_name")
+  sourceUrl   String        @unique @map("source_url")
+  articleUrl  String        @map("article_url")
+  category    NewsCategory?
+  publishedAt DateTime?     @map("published_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  isActive    Boolean       @default(true) @map("is_active")
+
+  @@index([isActive, publishedAt])
+  @@index([category])
+  @@index([createdAt])
+  @@map("news_articles")
+}
