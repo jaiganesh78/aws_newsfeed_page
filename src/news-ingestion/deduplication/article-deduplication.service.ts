@@ -17,7 +17,10 @@ export class ArticleDeduplicationService {
 
     for (const article of sorted) {
       const normalizedUrl = article.articleUrl.toLowerCase();
-      const normalizedTitle = article.title.toLowerCase();
+      const normalizedTitle = article.title
+        .toLowerCase()
+        .replace(/[^\w\s]/g, '')
+        .trim();
 
       if (seenUrls.has(normalizedUrl) || seenTitles.has(normalizedTitle)) {
         continue;

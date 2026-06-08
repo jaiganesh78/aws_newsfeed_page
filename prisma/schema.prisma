@@ -26,8 +26,8 @@ model NewsArticle {
   aiSummary   String?       @map("ai_summary") @db.Text
   imageUrl    String?       @map("image_url")
   sourceName  String        @map("source_name")
-  sourceUrl   String        @unique @map("source_url")
-  articleUrl  String        @map("article_url")
+  sourceUrl   String        @map("source_url")
+  articleUrl  String        @unique @map("article_url")
   category    NewsCategory?
   publishedAt DateTime?     @map("published_at")
   createdAt   DateTime      @default(now()) @map("created_at")
