@@ -1,11 +1,13 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { FeedCacheService } from '../feed-cache/services/feed-cache.service';
+import { FeedGenerationService } from '../feed-cache/services/feed-generation.service';
 import { FeedDetailResponseDto } from './dto/feed-detail-response.dto';
 import { FeedListResponseDto } from './dto/feed-list-response.dto';
-import { FEED_ARTICLE_LIMIT } from './feed.constants';
-import {
-  toFeedDetailResponseDto,
-  toGetFeedResponseDto,
-} from './feed.mapper';
+import { toFeedDetailResponseDto } from './feed.mapper';
 import {
   INewsArticleRepository,
   NEWS_ARTICLE_REPOSITORY,
@@ -16,14 +18,23 @@ export class FeedService {
   constructor(
     @Inject(NEWS_ARTICLE_REPOSITORY)
     private readonly newsArticleRepository: INewsArticleRepository,
+    private readonly feedGenerationService: FeedGenerationService,
+    private readonly feedCacheService: FeedCacheService,
   ) {}
 
   async getLatestFeed(): Promise<FeedListResponseDto> {
-    const articles = await this.newsArticleRepository.findLatest(
-      FEED_ARTICLE_LIMIT,
-    );
+    const cachedFeed = await this.feedCacheService.getFeed();
 
-    const items = articles.map(toGetFeedResponseDto);
+    if (cachedFeed) {
+      return {
+        items: cachedFeed,
+        total: cachedFeed.length,
+      };
+    }
+
+    const items = await this.feedGenerationService.generateFeed();
+
+    await this.feedCacheService.setFeed(items);
 
     return {
       items,

@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { CacheRefreshService } from '../feed-cache/services/cache-refresh.service';
 import { NewsAggregationService } from '../news-providers/news-aggregation.service';
 import { ArticleDeduplicationService } from './deduplication/article-deduplication.service';
 import { IngestionResult } from './interfaces/ingestion-result.interface';
@@ -12,6 +13,7 @@ export class IngestionOrchestratorService {
     private readonly newsAggregationService: NewsAggregationService,
     private readonly articleDeduplicationService: ArticleDeduplicationService,
     private readonly articlePersistenceService: ArticlePersistenceService,
+    private readonly cacheRefreshService: CacheRefreshService,
   ) {}
 
   async runIngestion(): Promise<IngestionResult> {
@@ -37,6 +39,15 @@ export class IngestionOrchestratorService {
         deduplicatedArticles,
       );
 
+    try {
+      await this.cacheRefreshService.refreshFeedCache();
+    } catch (error) {
+      this.logger.error(
+        `Feed cache refresh failed after ingestion: ${this.formatError(error)}`,
+        error instanceof Error ? error.stack : undefined,
+      );
+    }
+
     const alreadyExisting = deduplicatedArticles.length - persisted;
 
     const result: IngestionResult = {
@@ -52,5 +63,13 @@ export class IngestionOrchestratorService {
     );
 
     return result;
+  }
+
+  private formatError(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return 'Unknown error';
   }
 }
