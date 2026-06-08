@@ -1,3 +1,5 @@
+import { NewsCategory } from '@prisma/client';
+
 export interface NormalizedArticle {
   title: string;
   description: string | null;
@@ -5,7 +7,7 @@ export interface NormalizedArticle {
   sourceName: string;
   sourceUrl: string;
   articleUrl: string;
-  category: string | null;
+  category: NewsCategory | null;
   publishedAt: Date | null;
   provider: string;
 }
