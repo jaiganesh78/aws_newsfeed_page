@@ -40,3 +40,20 @@ model NewsArticle {
   @@index([createdAt])
   @@map("news_articles")
 }
+
+model IngestionRun {
+  id           String    @id @default(uuid()) @db.Uuid
+  startedAt    DateTime  @map("started_at")
+  completedAt  DateTime? @map("completed_at")
+  durationMs   Int?      @map("duration_ms")
+  fetched      Int       @default(0)
+  deduplicated Int       @default(0)
+  persisted    Int       @default(0)
+  status       String
+  errorMessage String?   @map("error_message")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([status])
+  @@map("ingestion_runs")
+}

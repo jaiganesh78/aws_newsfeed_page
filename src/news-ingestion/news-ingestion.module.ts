@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { IngestionRunRepository } from '../admin/repositories/ingestion-run.repository';
 import { ArticleExtractionModule } from '../article-extraction/article-extraction.module';
 import { ArticleSummarizationModule } from '../article-summarization/article-summarization.module';
 import { FeedCacheModule } from '../feed-cache/feed-cache.module';
@@ -21,6 +22,7 @@ import { CloudPriorityRankingService } from './ranking/cloud-priority-ranking.se
     ArticleDeduplicationService,
     CloudPriorityRankingService,
     ArticlePersistenceService,
+    IngestionRunRepository,
     IngestionOrchestratorService,
   ],
   exports: [IngestionOrchestratorService],
