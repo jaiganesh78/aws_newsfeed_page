@@ -4,7 +4,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { ExtractedArticle } from '../../article-extraction/interfaces/extracted-article.interface';
+import { SummarizedArticle } from '../../article-summarization/interfaces/summarized-article.interface';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class ArticlePersistenceService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async persistArticles(articles: ExtractedArticle[]): Promise<number> {
+  async persistArticles(articles: SummarizedArticle[]): Promise<number> {
     if (articles.length === 0) {
       return 0;
     }
@@ -38,13 +38,13 @@ export class ArticlePersistenceService {
   }
 
   private toCreateManyInput(
-    article: ExtractedArticle,
+    article: SummarizedArticle,
   ): Prisma.NewsArticleCreateManyInput {
     return {
       title: article.title,
       description: article.description,
       fullContent: article.fullContent,
-      aiSummary: null,
+      aiSummary: article.aiSummary,
       imageUrl: article.imageUrl,
       sourceName: article.sourceName,
       sourceUrl: article.sourceUrl,
