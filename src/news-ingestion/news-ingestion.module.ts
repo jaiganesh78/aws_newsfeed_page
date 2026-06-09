@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ArticleExtractionModule } from '../article-extraction/article-extraction.module';
 import { FeedCacheModule } from '../feed-cache/feed-cache.module';
 import { NewsProvidersModule } from '../news-providers/news-providers.module';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -8,7 +9,12 @@ import { ArticlePersistenceService } from './persistence/article-persistence.ser
 import { CloudPriorityRankingService } from './ranking/cloud-priority-ranking.service';
 
 @Module({
-  imports: [NewsProvidersModule, PrismaModule, FeedCacheModule],
+  imports: [
+    NewsProvidersModule,
+    PrismaModule,
+    FeedCacheModule,
+    ArticleExtractionModule,
+  ],
   providers: [
     ArticleDeduplicationService,
     CloudPriorityRankingService,

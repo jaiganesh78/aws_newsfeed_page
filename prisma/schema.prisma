@@ -23,6 +23,7 @@ model NewsArticle {
   id          String        @id @default(uuid()) @db.Uuid
   title       String
   description String?       @db.Text
+  fullContent String?       @map("full_content") @db.Text
   aiSummary   String?       @map("ai_summary") @db.Text
   imageUrl    String?       @map("image_url")
   sourceName  String        @map("source_name")

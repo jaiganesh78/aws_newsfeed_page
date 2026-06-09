@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ArticleExtractionService } from '../article-extraction/services/article-extraction.service';
 import { CacheRefreshService } from '../feed-cache/services/cache-refresh.service';
 import { NewsAggregationService } from '../news-providers/news-aggregation.service';
 import { ArticleDeduplicationService } from './deduplication/article-deduplication.service';
@@ -12,6 +13,7 @@ export class IngestionOrchestratorService {
   constructor(
     private readonly newsAggregationService: NewsAggregationService,
     private readonly articleDeduplicationService: ArticleDeduplicationService,
+    private readonly articleExtractionService: ArticleExtractionService,
     private readonly articlePersistenceService: ArticlePersistenceService,
     private readonly cacheRefreshService: CacheRefreshService,
   ) {}
@@ -34,10 +36,13 @@ export class IngestionOrchestratorService {
     const duplicatesRemoved =
       fetchedArticles.length - deduplicatedArticles.length;
 
-    const persisted =
-      await this.articlePersistenceService.persistArticles(
+    const extractedArticles =
+      await this.articleExtractionService.extractArticles(
         deduplicatedArticles,
       );
+
+    const persisted =
+      await this.articlePersistenceService.persistArticles(extractedArticles);
 
     try {
       await this.cacheRefreshService.refreshFeedCache();
@@ -48,7 +53,7 @@ export class IngestionOrchestratorService {
       );
     }
 
-    const alreadyExisting = deduplicatedArticles.length - persisted;
+    const alreadyExisting = extractedArticles.length - persisted;
 
     const result: IngestionResult = {
       fetched: fetchedArticles.length,

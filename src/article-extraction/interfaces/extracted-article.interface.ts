@@ -1,6 +1,6 @@
 import { NewsCategory } from '@prisma/client';
 
-export interface NormalizedArticle {
+export interface ExtractedArticle {
   title: string;
   description: string | null;
   imageUrl: string | null;

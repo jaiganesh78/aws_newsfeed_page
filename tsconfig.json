@@ -7,9 +7,11 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
+    "rootDir": "./src",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+
     "incremental": true,
     "skipLibCheck": true,
     "strict": true,

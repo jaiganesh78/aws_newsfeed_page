@@ -45,6 +45,7 @@ export function normalizeRssItem(
     articleUrl,
     category: feed.category,
     publishedAt: parsePublishedDate(item.isoDate ?? item.pubDate ?? null),
+    fullContent: null,
     provider: PROVIDER_NAMES.RSS,
   };
 }

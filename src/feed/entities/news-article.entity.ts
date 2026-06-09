@@ -4,6 +4,7 @@ export class NewsArticleEntity {
   id!: string;
   title!: string;
   description!: string | null;
+  fullContent!: string | null;
   aiSummary!: string | null;
   imageUrl!: string | null;
   sourceName!: string;

@@ -74,6 +74,7 @@ export class NewsArticleRepository implements INewsArticleRepository {
     return {
       title: data.title,
       description: data.description ?? null,
+      fullContent: data.fullContent,
       aiSummary: data.aiSummary ?? null,
       imageUrl: data.imageUrl ?? null,
       sourceName: data.sourceName,
@@ -91,6 +92,7 @@ export class NewsArticleRepository implements INewsArticleRepository {
       id: article.id,
       title: article.title,
       description: article.description,
+      fullContent: article.fullContent,
       aiSummary: article.aiSummary,
       imageUrl: article.imageUrl,
       sourceName: article.sourceName,

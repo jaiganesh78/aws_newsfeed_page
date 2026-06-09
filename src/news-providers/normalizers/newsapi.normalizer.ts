@@ -59,6 +59,7 @@ export function normalizeNewsApiArticle(
     articleUrl,
     category: inferCategory(title, description),
     publishedAt: parsePublishedDate(article.publishedAt),
+    fullContent: null,
     provider: PROVIDER_NAMES.NEWSAPI,
   };
 }
