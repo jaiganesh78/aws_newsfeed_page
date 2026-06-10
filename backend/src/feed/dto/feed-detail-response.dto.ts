@@ -9,6 +9,6 @@ export class FeedDetailResponseDto {
   imageUrl!: string | null;
   sourceName!: string;
   articleUrl!: string;
-  category!: string | null;
+  category!: NewsCategory | null;
   publishedAt!: Date | null;
 }

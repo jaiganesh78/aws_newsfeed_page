@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { memo } from "react";
 import type { NewsArticle } from "@/types/news";
 import { formatPublishedDate, getCategoryLabel } from "@/utils/news-format";
-import { NewsImageFallback } from "./NewsImageFallback";
+import { NewsImage } from "./NewsImage";
 
 type FeaturedArticleHeroProps = {
   article: NewsArticle;
@@ -15,8 +14,6 @@ export const FeaturedArticleHero = memo(function FeaturedArticleHero({
   article,
   onClick,
 }: FeaturedArticleHeroProps) {
-  const imageUrl = article.imageUrl;
-
   return (
     <button
       type="button"
@@ -24,18 +21,13 @@ export const FeaturedArticleHero = memo(function FeaturedArticleHero({
       onClick={() => onClick(article.id)}
       className="group relative min-h-[460px] w-full overflow-hidden rounded-[var(--radius-xl)] text-left text-white [box-shadow:var(--shadow-soft)] transition duration-300 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-foreground/20 lg:min-h-[560px]"
     >
-      {imageUrl !== null ? (
-        <Image
-          src={imageUrl}
-          alt=""
-          fill
-          priority
-          sizes="(min-width: 1024px) 64vw, 100vw"
-          className="object-cover transition duration-700 group-hover:scale-105"
-        />
-      ) : (
-        <NewsImageFallback category={article.category} />
-      )}
+      <NewsImage
+        src={article.imageUrl}
+        category={article.category}
+        priority
+        sizes="(min-width: 1024px) 64vw, 100vw"
+        className="object-cover transition duration-700 group-hover:scale-105"
+      />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,221,148,0.34),transparent_28%)]" />

@@ -6,9 +6,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ENV_KEYS } from '../../config/env.keys';
 
-const CLAUDE_HAIKU_MODEL_ID =
-  'anthropic.claude-3-haiku-20240307-v1:0';
-
 interface ClaudeTextResponse {
   content?: Array<{
     type?: string;
@@ -19,22 +16,59 @@ interface ClaudeTextResponse {
 @Injectable()
 export class BedrockClientService {
   private readonly logger = new Logger(BedrockClientService.name);
-  private readonly client: BedrockRuntimeClient;
-  private readonly modelId: string;
+  private readonly client: BedrockRuntimeClient | null;
+  private readonly modelId: string | null;
 
   constructor(private readonly configService: ConfigService) {
-    const region = this.getRequiredConfig(ENV_KEYS.AWS_REGION);
-    this.modelId = this.getRequiredConfig(ENV_KEYS.BEDROCK_MODEL_ID);
+    const region = this.getOptionalConfig(ENV_KEYS.AWS_REGION);
+    this.modelId = this.getOptionalConfig(ENV_KEYS.BEDROCK_MODEL_ID);
+    const accessKeyId = this.getOptionalConfig(
+      ENV_KEYS.AWS_ACCESS_KEY_ID,
+    );
+    const secretAccessKey = this.getOptionalConfig(
+      ENV_KEYS.AWS_SECRET_ACCESS_KEY,
+    );
 
-    
+    if (!region || !this.modelId) {
+      this.client = null;
+      this.logger.warn(
+        'Bedrock summarization is disabled: AWS_REGION and BEDROCK_MODEL_ID must be configured.',
+      );
+
+      return;
+    }
+
+    if ((accessKeyId && !secretAccessKey) || (!accessKeyId && secretAccessKey)) {
+      this.logger.warn(
+        'Bedrock credentials are incomplete: both AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are required when using static credentials.',
+      );
+    }
 
     this.client = new BedrockRuntimeClient({
       region,
       maxAttempts: 3,
+      ...(accessKeyId && secretAccessKey
+        ? {
+            credentials: {
+              accessKeyId,
+              secretAccessKey,
+            },
+          }
+        : {}),
     });
   }
 
+  isConfigured(): boolean {
+    return this.client !== null && this.modelId !== null;
+  }
+
   async invokeClaudeHaiku(prompt: string): Promise<string> {
+    if (!this.client || !this.modelId) {
+      throw new Error(
+        'Bedrock summarization is not configured. Set AWS_REGION and BEDROCK_MODEL_ID.',
+      );
+    }
+
     try {
       const command = new InvokeModelCommand({
         modelId: this.modelId,
@@ -82,14 +116,10 @@ export class BedrockClientService {
     }
   }
 
-  private getRequiredConfig(key: string): string {
+  private getOptionalConfig(key: string): string | null {
     const value = this.configService.get<string>(key);
 
-    if (!value) {
-      throw new Error(`${key} is not configured`);
-    }
-
-    return value;
+    return value?.trim() || null;
   }
 
   private formatError(error: unknown): string {

@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { memo } from "react";
 import type { NewsArticle } from "@/types/news";
 import { formatPublishedDate, getCategoryLabel } from "@/utils/news-format";
 import { cn } from "@/utils/cn";
-import { NewsImageFallback } from "./NewsImageFallback";
+import { NewsImage } from "./NewsImage";
 
 type FeaturedCompactCardProps = {
   article: NewsArticle;
@@ -18,8 +17,6 @@ export const FeaturedCompactCard = memo(function FeaturedCompactCard({
   onClick,
   size = "small",
 }: FeaturedCompactCardProps) {
-  const imageUrl = article.imageUrl;
-
   return (
     <button
       type="button"
@@ -30,17 +27,12 @@ export const FeaturedCompactCard = memo(function FeaturedCompactCard({
         size === "medium" && "min-h-64",
       )}
     >
-      {imageUrl !== null ? (
-        <Image
-          src={imageUrl}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 18vw, 50vw"
-          className="object-cover transition duration-700 group-hover:scale-105"
-        />
-      ) : (
-        <NewsImageFallback category={article.category} />
-      )}
+      <NewsImage
+        src={article.imageUrl}
+        category={article.category}
+        sizes="(min-width: 1024px) 18vw, 50vw"
+        className="object-cover transition duration-700 group-hover:scale-105"
+      />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/10" />
 

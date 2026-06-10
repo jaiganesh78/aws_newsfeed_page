@@ -9,6 +9,7 @@ import {
   splitArticleContent,
 } from "@/utils/news-format";
 import { ErrorState } from "./ErrorState";
+import { NewsImage } from "./NewsImage";
 
 type ArticleDetailModalProps = {
   articleId: string;
@@ -99,14 +100,14 @@ export function ArticleDetailModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="article-detail-title"
-        aria-describedby={article ? "article-detail-summary" : undefined}
+        aria-describedby={article?.aiSummary ? "article-detail-summary" : undefined}
         tabIndex={-1}
-        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-background shadow-2xl outline-none sm:h-auto sm:max-h-[80vh] sm:max-w-[900px] sm:rounded-[var(--radius-xl)]"
+        className="flex h-[100dvh] w-full flex-col overflow-hidden bg-background shadow-2xl outline-none sm:h-[90vh] sm:w-[90vw] sm:max-w-[1440px] sm:rounded-[var(--radius-xl)]"
       >
-        <div className="flex items-center justify-between gap-4 border-b border-border bg-card px-5 py-4 sm:px-7">
+        <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-border bg-card/95 px-5 py-4 backdrop-blur-xl sm:px-7">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-              Article
+              Article Reader
             </p>
           </div>
           <button
@@ -119,7 +120,7 @@ export function ArticleDetailModal({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-8">
+        <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-7 sm:py-7">
           {isLoading ? (
             <div className="mx-auto max-w-3xl">
               <div className="skeleton-shimmer h-7 w-28 rounded-full bg-white/60" />
@@ -141,10 +142,22 @@ export function ArticleDetailModal({
           ) : null}
 
           {article ? (
-            <article className="mx-auto max-w-3xl">
+            <article className="mx-auto max-w-6xl">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[var(--radius-xl)] [box-shadow:var(--shadow-soft)]">
+                <NewsImage
+                  src={article.imageUrl}
+                  category={article.category}
+                  sizes="90vw"
+                  fallbackTone="light"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+
+              <div className="mx-auto mt-7 max-w-4xl">
               <span className="inline-flex rounded-full bg-foreground px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-background">
-                {getCategoryLabel(article.category)}
-              </span>
+                  {getCategoryLabel(article.category)}
+                </span>
               <h1
                 id="article-detail-title"
                 className="mt-5 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl"
@@ -161,17 +174,19 @@ export function ArticleDetailModal({
                 </p>
               ) : null}
 
-              <section className="mt-8 rounded-[var(--radius-lg)] border border-border bg-card p-5">
-                <h2 className="font-display text-xl font-semibold">
-                  AI Summary
-                </h2>
-                <p
+              {article.aiSummary ? (
+                <section
                   id="article-detail-summary"
-                  className="mt-3 text-base leading-8 text-muted"
+                  className="mt-8 rounded-[var(--radius-lg)] border border-border bg-card p-5 [box-shadow:var(--shadow-soft)]"
                 >
-                  {article.aiSummary ?? "Summary unavailable."}
-                </p>
-              </section>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                    AI Summary
+                  </p>
+                  <p className="mt-3 font-display text-xl leading-8 text-foreground">
+                    {article.aiSummary}
+                  </p>
+                </section>
+              ) : null}
 
               <section className="mt-8">
                 <h2 className="font-display text-xl font-semibold">
@@ -199,6 +214,7 @@ export function ArticleDetailModal({
                 Read Original Article
                 <ExternalLink className="size-4" aria-hidden="true" />
               </a>
+              </div>
             </article>
           ) : null}
         </div>

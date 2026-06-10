@@ -28,6 +28,17 @@ export class ArticleSummarizationService {
       `Article Summarization Started: count=${articles.length}`,
     );
 
+    if (!this.bedrockClientService.isConfigured()) {
+      this.logger.warn(
+        'Article summarization skipped: Bedrock is not configured.',
+      );
+
+      return articles.map((article) => ({
+        ...article,
+        aiSummary: null,
+      }));
+    }
+
     for (let index = 0; index < articles.length; index += BATCH_SIZE) {
       const batch = articles.slice(index, index + BATCH_SIZE);
       const batchResults = await Promise.all(
