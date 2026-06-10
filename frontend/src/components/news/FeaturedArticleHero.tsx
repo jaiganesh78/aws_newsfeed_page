@@ -39,9 +39,11 @@ export const FeaturedArticleHero = memo(function FeaturedArticleHero({
         <h2 className="max-w-3xl font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
           {article.title}
         </h2>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-white/82">
-          {article.aiSummary ?? "Summary unavailable."}
-        </p>
+        {article.aiSummary ? (
+          <p className="mt-4 max-w-2xl text-base leading-7 text-white/82">
+            {article.aiSummary}
+          </p>
+        ) : null}
         <p className="mt-6 text-sm font-medium text-white/78">
           {article.sourceName} - {formatPublishedDate(article.publishedAt)}
         </p>

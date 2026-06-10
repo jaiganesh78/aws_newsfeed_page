@@ -1,1 +1,1 @@
-export const FEED_ARTICLE_LIMIT = 20;
+export const FEED_ARTICLE_LIMIT = 40;

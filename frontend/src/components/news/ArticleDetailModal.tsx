@@ -100,7 +100,9 @@ export function ArticleDetailModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="article-detail-title"
-        aria-describedby={article?.aiSummary ? "article-detail-summary" : undefined}
+        aria-describedby={
+          article?.aiSummary ? "article-detail-summary" : undefined
+        }
         tabIndex={-1}
         className="flex h-[100dvh] w-full flex-col overflow-hidden bg-background shadow-2xl outline-none sm:h-[90vh] sm:w-[90vw] sm:max-w-[1440px] sm:rounded-[var(--radius-xl)]"
       >
@@ -155,65 +157,66 @@ export function ArticleDetailModal({
               </div>
 
               <div className="mx-auto mt-7 max-w-4xl">
-              <span className="inline-flex rounded-full bg-foreground px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-background">
+                <span className="inline-flex rounded-full bg-foreground px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-background">
                   {getCategoryLabel(article.category)}
                 </span>
-              <h1
-                id="article-detail-title"
-                className="mt-5 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl"
-              >
-                {article.title}
-              </h1>
-              <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-muted">
-                {article.sourceName} - {formatPublishedDate(article.publishedAt)}
-              </p>
-
-              {article.description ? (
-                <p className="mt-6 rounded-[var(--radius-lg)] border border-border bg-card p-5 text-lg leading-8 text-foreground/78">
-                  {article.description}
-                </p>
-              ) : null}
-
-              {article.aiSummary ? (
-                <section
-                  id="article-detail-summary"
-                  className="mt-8 rounded-[var(--radius-lg)] border border-border bg-card p-5 [box-shadow:var(--shadow-soft)]"
+                <h1
+                  id="article-detail-title"
+                  className="mt-5 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                    AI Summary
+                  {article.title}
+                </h1>
+                <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+                  {article.sourceName} -{' '}
+                  {formatPublishedDate(article.publishedAt)}
+                </p>
+
+                {article.description ? (
+                  <p className="mt-6 rounded-[var(--radius-lg)] border border-border bg-card p-5 text-lg leading-8 text-foreground/78">
+                    {article.description}
                   </p>
-                  <p className="mt-3 font-display text-xl leading-8 text-foreground">
-                    {article.aiSummary}
-                  </p>
+                ) : null}
+
+                {article.aiSummary ? (
+                  <section
+                    id="article-detail-summary"
+                    className="mt-8 rounded-[var(--radius-lg)] border border-border bg-card p-5 [box-shadow:var(--shadow-soft)]"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+                      AI Summary
+                    </p>
+                    <p className="mt-3 font-display text-xl leading-8 text-foreground">
+                      {article.aiSummary}
+                    </p>
+                  </section>
+                ) : null}
+
+                <section className="mt-8">
+                  <h2 className="font-display text-xl font-semibold">
+                    Full Article
+                  </h2>
+                  {paragraphs.length > 0 ? (
+                    <div className="mt-4 space-y-5 text-base leading-8 text-foreground/82">
+                      {paragraphs.map((paragraph, index) => (
+                        <p key={`${article.id}-${index}`}>{paragraph}</p>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-4 rounded-[var(--radius-lg)] border border-border bg-card p-5 text-base text-muted">
+                      Full article unavailable.
+                    </p>
+                  )}
                 </section>
-              ) : null}
 
-              <section className="mt-8">
-                <h2 className="font-display text-xl font-semibold">
-                  Full Article
-                </h2>
-                {paragraphs.length > 0 ? (
-                  <div className="mt-4 space-y-5 text-base leading-8 text-foreground/82">
-                    {paragraphs.map((paragraph, index) => (
-                      <p key={`${article.id}-${index}`}>{paragraph}</p>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="mt-4 rounded-[var(--radius-lg)] border border-border bg-card p-5 text-base text-muted">
-                    Full article unavailable.
-                  </p>
-                )}
-              </section>
-
-              <a
-                href={article.articleUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background transition hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-foreground/15"
-              >
-                Read Original Article
-                <ExternalLink className="size-4" aria-hidden="true" />
-              </a>
+                <a
+                  href={article.articleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/90 px-5 py-3 text-sm font-semibold text-foreground [box-shadow:var(--shadow-soft)] transition hover:-translate-y-0.5 hover:bg-white/90 focus:outline-none focus:ring-4 focus:ring-foreground/15"
+                >
+                  Read Original Article
+                  <ExternalLink className="size-4" aria-hidden="true" />
+                </a>
               </div>
             </article>
           ) : null}

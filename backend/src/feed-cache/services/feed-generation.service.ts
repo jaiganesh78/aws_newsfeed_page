@@ -11,8 +11,8 @@ const PRIORITY_CATEGORIES: ReadonlySet<NewsCategory> = new Set([
   NewsCategory.CLOUD,
 ]);
 
-const CLOUD_ARTICLE_LIMIT = 5;
-const OTHER_ARTICLE_LIMIT = 15;
+const CLOUD_ARTICLE_LIMIT = 10;
+const OTHER_ARTICLE_LIMIT = 30;
 const FEED_CANDIDATE_LIMIT = 200;
 
 @Injectable()

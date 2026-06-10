@@ -76,6 +76,11 @@ export class ArticleExtractionService {
       const fullContent = this.htmlContentExtractorService.extractContent(
         response.data,
       );
+      const recoveredImageUrl =
+        this.htmlContentExtractorService.extractImageUrl(
+          response.data,
+          article.articleUrl,
+        );
 
       if (fullContent === null) {
         const durationMs = Date.now() - startedAt;
@@ -89,6 +94,7 @@ export class ArticleExtractionService {
         article: {
           ...article,
           fullContent,
+          imageUrl: recoveredImageUrl ?? article.imageUrl,
         },
         wasSuccessful: fullContent !== null,
       };

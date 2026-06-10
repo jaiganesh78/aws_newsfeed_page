@@ -39,9 +39,11 @@ export const NewsCard = memo(function NewsCard({
         <h2 className="font-display text-xl font-semibold leading-snug tracking-tight text-foreground">
           {article.title}
         </h2>
-        <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted">
-          {article.aiSummary ?? "Summary unavailable."}
-        </p>
+        {article.aiSummary ? (
+          <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted">
+            {article.aiSummary}
+          </p>
+        ) : null}
         <p className="mt-auto pt-6 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
           {article.sourceName} - {formatPublishedDate(article.publishedAt)}
         </p>
