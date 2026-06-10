@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fff8ec;
-  --card: rgba(255, 255, 255, 0.78);
-  --muted: #70695f;
-  --foreground: #1f251f;
-  --border: rgba(56, 45, 28, 0.14);
-  --shadow-soft: 0 22px 70px rgba(91, 68, 32, 0.14);
+  --background: #f7f5ef;
+  --card: rgba(255, 255, 255, 0.86);
+  --surface-alt: #f3efe6;
+  --accent: #d9b86c;
+  --muted: #5f5f5f;
+  --foreground: #111111;
+  --border: rgba(31, 28, 22, 0.13);
+  --shadow-soft: 0 24px 80px rgba(34, 28, 18, 0.15);
   --radius-lg: 24px;
   --radius-xl: 34px;
   --aws-gradient: linear-gradient(

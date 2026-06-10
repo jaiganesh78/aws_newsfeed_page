@@ -24,6 +24,8 @@ export const FeaturedArticleHero = memo(function FeaturedArticleHero({
       <NewsImage
         src={article.imageUrl}
         category={article.category}
+        articleId={article.id}
+        alt={article.title}
         priority
         sizes="(min-width: 1024px) 64vw, 100vw"
         className="object-cover transition duration-700 group-hover:scale-105"

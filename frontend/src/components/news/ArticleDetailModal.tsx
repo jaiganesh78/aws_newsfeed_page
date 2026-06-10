@@ -149,6 +149,8 @@ export function ArticleDetailModal({
                 <NewsImage
                   src={article.imageUrl}
                   category={article.category}
+                  articleId={article.id}
+                  alt={article.title}
                   sizes="90vw"
                   fallbackTone="light"
                   className="object-cover"
