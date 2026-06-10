@@ -5,9 +5,10 @@ export class FeedDetailResponseDto {
   title!: string;
   description!: string | null;
   aiSummary!: string | null;
+  fullContent!: string | null;
   imageUrl!: string | null;
   sourceName!: string;
   articleUrl!: string;
-  category!: NewsCategory | null;
+  category!: string | null;
   publishedAt!: Date | null;
 }

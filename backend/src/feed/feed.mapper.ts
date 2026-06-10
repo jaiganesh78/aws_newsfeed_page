@@ -23,6 +23,7 @@ export function toFeedDetailResponseDto(
     id: article.id,
     title: article.title,
     description: article.description,
+    fullContent: article.fullContent,
     aiSummary: article.aiSummary,
     imageUrl: article.imageUrl,
     sourceName: article.sourceName,
