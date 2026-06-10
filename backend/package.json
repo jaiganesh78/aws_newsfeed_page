@@ -35,6 +35,9 @@
     "@nestjs/schematics": "^10.2.3",
     "@types/node": "^22.10.2",
     "prisma": "^6.1.0",
-    "typescript": "^5.7.2"
+    "ts-loader": "^9.6.0",
+    "typescript": "5.7.2",
+    "webpack": "^5.107.2",
+    "webpack-cli": "^7.0.3"
   }
 }
