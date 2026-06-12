@@ -26,30 +26,33 @@ export const CloudHeadlines = memo(function CloudHeadlines({
     <aside
       aria-label="Cloud headlines"
       className={cn(
-        "rounded-[var(--radius-xl)] border border-border bg-card/92 p-5 [box-shadow:var(--shadow-soft)] backdrop-blur-xl",
+        "rounded-[var(--radius-xl)] border border-border bg-card/92 p-4 [box-shadow:var(--shadow-soft)] backdrop-blur-xl",
         className,
       )}
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
-        Fast scan
-      </p>
-      <h2 className="mt-2 font-display text-xl font-semibold tracking-tight">
-        Cloud Headlines
-      </h2>
-      <div className="mt-5 divide-y divide-border/80">
+      <div className="mb-3">
+        <div className="mb-2 h-px w-12 bg-[color:var(--accent)]" />
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">
+          Fast scan
+        </p>
+        <h2 className="mt-1 font-display text-lg font-semibold tracking-tight">
+          Cloud Headlines
+        </h2>
+      </div>
+      <div className="divide-y divide-border/80">
         {headlines.map((article) => (
           <button
             key={article.id}
             type="button"
             aria-label={`Open article: ${article.title}`}
             onClick={() => onArticleClick(article.id)}
-            className="group block w-full rounded-2xl py-4 text-left transition focus:outline-none focus:ring-4 focus:ring-foreground/10"
+            className="group block w-full py-3 text-left transition first:pt-0 focus:outline-none focus:ring-4 focus:ring-foreground/10"
           >
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-              {getCategoryLabel(article.category)} -{" "}
+            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">
+              {getCategoryLabel(article.category)} ·{" "}
               {formatRelativeTime(article.publishedAt)}
             </span>
-            <span className="mt-2 block text-sm font-semibold leading-6 text-foreground transition group-hover:text-[color:var(--accent)]">
+            <span className="mt-1 block text-[13px] font-semibold leading-[1.45] text-foreground transition group-hover:text-[color:var(--accent)]">
               {article.title}
             </span>
           </button>
